@@ -1,0 +1,198 @@
+---
+title: "Subsetting and Functions"
+author: "Neeraj Jain"
+date: "03-02-2020"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+#1. Subsetting by logical values
+```{r, error = TRUE}
+rm(list = ls())
+a <- c(1, 4 , 5, 10)  
+a[c(T, F, T, F)]  #values return for TRUE
+
+a[a > 2] #values greater than 2
+
+a[c(T, F)] #logical values rotates in subsetting. 
+
+#Creating sequence of odd number
+seq(1, 100,2)  #using `seq` function
+(1:100)[c(T, F)] #using subsetting
+
+#subsetting NA returns NA
+a[c(1, 2, NA)] 
+
+#Subsetting only NA value
+a[NA] #since, NA is logical by default, therefore it rotates and return 4 NA's. 
+
+#logical functions and operator
+#  >  < >= <= ! & | all any
+```
+
+#2. Subsetting by element name
+```{r}
+#Subsetting by element name
+BBE <- c(abhijit = 10, harkaran = 9.2, Guntas = 2.1, Dhawal = 20, Risabh = 20)
+#element names are meta data
+
+sum(BBE)
+
+#Getting marks of abhijit and guntas
+BBE[c("abhijit", "Guntas")]  #highly case sensitive
+
+BBE["Risabh"] #marks of risabh only
+
+
+#name of student with highest marks
+max(BBE)  #maximum marks
+names(BBE) #names of all elements 
+BBE == max(BBE) #testing which elements marks are equal to maximum marks. 
+
+names(BBE[BBE == max(BBE)]) #required result: method 1
+
+names(BBE)[BBE == max(BBE)] #required result: method 2
+```
+
+
+###1. Subsetting on dataframe: More complicated case: 
+```{r}
+
+#Generating some random data
+set.seed(0809)
+Gender <- sample(c("M", "F"), size = 20, replace = T)
+Course <- sample(c("BBE", "BCOM"), size = 20, replace = T)
+Accounting <- runif(n = 20, min = 10, max = 20)
+Eco <- runif(n = 20, min = 10, max = 20)
+df <- data.frame(Gender, Course, Accounting, Eco)
+
+
+##Students cases
+#1 Data for marks of BBE students
+df[df$Course == "BBE", ]
+df$Course 
+
+#2: Data for BCOM and Female
+df[df$Course == "BCOM" & df$Gender == "F", ]
+
+
+#3. Maixmum marks of accounting for BBE males.
+a_bbe_m <- df[df$Course == "BBE"& df$Gender == "M", ]
+max(a_bbe_m$Accounting)
+
+#4. BCOM : Difference of ECo and accounting  marks
+df2 <- df[df$Course == "BCOM", ]
+df2$Diff <- df2$Accounting - df2$Eco #saving the variable to existing data frame. 
+
+df$status <- ifelse(df$Eco < 12, "Fail", "Pass") #assigning pass and fail. 
+df
+
+## Practice
+#1. Get mean marks of BBE, and BCOM
+
+##a. First method
+mean(df[df$Course == "BBE", ]$Accounting) 
+
+##b. 2nd method
+mean(df$Accounting[df$Course == "BBE"])
+
+
+#2. Mean marks of males and females. 
+mean(df$Accounting[df$Gender == "M"])
+mean(df$Accounting[df$Gender == "F"])
+
+
+#3. Cross tabulation for course and gender
+table(df$Gender, df$Course) #return frequency distribution
+
+#4. max marks gender wise and course wise: For accounting only
+max( df$Accounting[df$Course == "BBE" & df$Gender == "M"] ) #method 1
+max( df[df$Course == "BBE" & df$Gender == "M", ]$Accounting ) #method 2
+
+#5. create following object
+a <- c(1, 5, 10, NA, 20)
+
+#a. Remove missing values
+a == NA #not right method
+a[!is.na(a)]
+
+#b. remove NA with mean values.
+mean(a, na.rm = T) #to get mean removing NA
+a[is.na(a)] <-  mean(a, na.rm = T) #replacing NA value with mean
+a
+```
+
+#3. Creating our own function
+
+```{r, error = TRUE}
+
+#1. Function for square
+sqr <- function(x) {
+  x^2
+}
+
+#example
+sqr(23)
+sqr(c(1, 4, 67))
+
+#2. power function
+powerf <- function(x, power ){
+  x^power
+}
+
+#example
+powerf(25, 2.2)
+powerf(x = 25, power = 2.2)
+powerf(x = 26)
+
+#3. Setting default value for arguments
+powerf <- function(x, power = 1){
+  x ^ power
+}
+
+#example
+powerf(24)
+
+#4. Skewness function
+skew <- function(x) {
+  Mean <- mean(x) 
+  L <- length(x)
+  s <- sum((x - Mean)^3) / L
+  s/sd(x)^3
+}
+
+#example
+Data <- c(2, 5, 7, 9, 10)
+skew(Data)
+
+#5. Kurtosis
+kurt <- function(x) {
+  Mean <- mean(x) 
+  L <- length(x)
+  s <- sum((x - Mean)^4) / L
+  s/sd(x)^4
+}
+
+#exampole
+kurt(Data)
+
+#6. Moments
+moment <- function(x, order = 1) {
+  sum((x - mean(x))^order) / length(x)
+}
+
+
+#7. Summary Statistics
+ss <- function(x) {
+  Mean <- mean(x) 
+  Sd <- sd(x)
+  Skew <- skew(x)
+  c(Mean = Mean, std  = Sd, Skewness = Skew, Min = min(x), Max = max(x), nobs = length(x))
+}
+
+#example
+ss(Data)
+```
+

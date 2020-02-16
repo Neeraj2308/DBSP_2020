@@ -1,0 +1,230 @@
+#Lab 4: 
+rm(list = ls())
+
+#Subsetting
+
+a <- c(1,2,3,4)
+
+#Subsetting can be done in three ways
+
+#1. By Index
+b <- a[1]
+c <- a[c(1,2)]
+a[5]
+
+a[c(1, 1, 1)]
+a[NA]
+a[c(1, 2, NA, 4)]
+
+a[-2]
+a[c(-3, -4)]
+
+
+a <- c(23, 24, 31, 31)
+a[1]
+a[2]
+a <- a[-2]
+a
+
+a <- a[-c(1,2)]
+a
+
+
+a <- c(23, 45, 23, 49)
+a[1] <- 46
+a[c(1,2)] <- c(34, 101)
+a
+
+
+#character Vector
+BB <- c("Vedansh", "Asim", "Sehnaz", "Paras", "Abhijit", "Shukla")
+BB <- BB[-c(1, 5)]
+BB 
+"Aarti", "Maraya"
+BB[c(5, 6)] <- c("aarti", "marya")
+BB <- c(BB, "aarti", "marya")
+BB
+length(BB)
+
+BB[5] <- "Tarang"
+BB
+BB
+
+BB <- c(BB[1:5], "Katrina Kaif", BB[6:10])
+BB
+
+BB
+
+SG <- c("Kukku", "Bunty", "Sartaz", "Gaitonde")
+SG
+SG <- c(SG[1:2], "Gurteg", SG[3:4])
+SG 
+
+Mat <- matrix(data = c(1, 4, 6, 8), ncol = 2)
+
+Mat
+Mat[2]
+Mat[1, 2]
+Mat2 <- matrix(1:16, ncol = 4)
+Mat2
+Mat2[5]
+Mat2[2,3]
+
+a <- 1:4
+a[1,2]
+
+Mat2[c(2,3) , ]
+Mat2[ , c(2,3)]
+Mat2[c(2,3), c(3,4)]
+
+#to add column and rows in matrix
+rbind
+cbind
+
+Mat2
+Paridhi <- rbind(Mat2, c(1,2,3,4))
+cbind(Mat2, c(1,2,3,4))
+
+
+ls <- list(a = 1:4, b = BB, c = Mat2)
+ls
+ls[c(2, 3)]
+str(ls[1])
+
+ls2 <- ls[c(2,3)]
+str(ls2)
+
+ls3 <- ls[2]
+str(ls3)
+length(ls3)
+
+ls4 <- ls[[2]]
+str(ls4)
+length(ls4)
+
+#Always use single index in double closed bracket. 
+ls[[2, 3]]
+
+#alternative of [[ is $
+ls$b
+ls$c
+
+ls$c[3, c(1,2)]
+ls$c[3, ][c(1,2)]
+
+set.seed(123)
+Df <- data.frame(a = rnorm(10), b = rnorm(10))
+Df
+
+Df[1,2]
+Df[1, ]
+Df[, 1]
+
+Df[[1]][c(7,8)]
+Df$a[c(7,8)]
+Df[c(7,8), 1]
+
+
+str(Df[1])
+str(Df[[1]])
+
+
+Df
+Df
+Df$b
+
+
+#Create following Df
+set.seed(007)
+Df2 <- as.data.frame(matrix(rnorm(16), ncol = 4))
+
+#1. Add new row as c(1,2,3, 4)
+#2. First get 2nd column using subsetting, then calculate sum, var of this.
+#3. Get 2nd column of your dataframe using 3 differetn methods. 
+#4. Get sum of 3rd row. 
+#5. Replace first column with 1:5
+
+
+##B. Subsetting by Logical value
+rm(list = ls())
+
+#logical Operators in R
+a <- c(2, 4, 6, 10) 
+
+a > 3
+a < 3
+a >= 3
+a <= 3
+a == 3
+a != 3
+
+#Excel 
+#and 
+#or
+
+# or(TRUE, TRUE, FALSE, TRUE)
+
+all #alternative of excel and
+any #alternative of excel or
+
+all(TRUE,TRUE, TRUE, FALSE)
+any(TRUE, FALSE, FALSE)
+
+b <- c("a", "a ", "a")
+b[c(1,2,3)] == "a"
+all(b == "a")
+
+
+d <- c(rep(1, 100), 2, 2, rep(1, 200))
+all(d == 1)
+which(c(TRUE, FALSE, FALSE, TRUE, TRUE))
+
+d[which(d != 1)]
+
+d[which(d != 1)]
+
+e <- c(TRUE, FALSE,TRUE)
+!e
+
+which(!(d == 1))
+
+g <- c(2, 5, 7, 10, 6)
+g[c(TRUE, FALSE, TRUE, FALSE, TRUE)]
+
+#all values greater than 5
+g > 5
+g[g > 5]
+
+#values <= 2
+# values not equal to 7
+# how many's values are greater than 3
+
+g[g <= 2]
+g[g != 7]
+sum(g > 3)
+
+
+#logical operators. 
+&, |
+
+F & T & T
+
+c(T, F, T, F) | c(F, T, T, F)
+
+
+#Question
+set.seed(123) 
+marks <- rnorm(82, mean = 65, sd = 20)
+
+#1. Validate your data to ensure that al values are between 0-100. If any value
+# greter than 100, replace by 100, and in case of less than 0, replace by 0.
+
+#2. Percentage of students who have scored more than 60 marks. 
+#3. Get index of students who scored more than 90 marks, and also vector of marks.  
+#4. Get mean of top 10 and bottom 10 students marks. [Hint: order]
+#5. Percentage of stuents who have scored marks between 75 - 90. 
+#6. If gender of the students is given as follows: 
+
+Gender <- sample(x = c("F", "G"), size = 82, replace = TRUE)
+#7. Find number of male students, and female students. 
+#8. Find mean, sd, min, and max of males and female marks respectively.
