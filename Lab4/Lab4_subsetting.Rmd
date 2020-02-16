@@ -242,5 +242,5 @@ Gender <- sample(x = c("F", "G"), size = 82, replace = TRUE)
 ************
 
 3. **By elements name**
-Done in next class
+Done in next class.
 
