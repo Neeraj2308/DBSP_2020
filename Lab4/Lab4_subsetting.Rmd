@@ -11,6 +11,8 @@ Lab 4:
 
 ###Subsetting can be done in three ways
 
+
+
 1. **By Index**
 
 ```{r, error = TRUE}
@@ -240,3 +242,5 @@ Gender <- sample(x = c("F", "G"), size = 82, replace = TRUE)
 ************
 
 3. **By elements name**
+Done in next class
+
