@@ -1,13 +1,20 @@
-#Loop and control flow function (if)
+---
+title: "Loop and Control flow"
+author: "Neeraj Jain"
+date: "17-02-2020"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+##1. Loop and control flow function (if)
+```{r, include=FALSE}
 rm(list =ls())
+```
 
-#Github Page
-github.com/neeraj2308
-
+###1. Loop
+```{r}
 #Creating simple Loop in R
-
-#1. Loop
-
 #Example: 1 - Print
 for(i in 1:9) {
   print(i^2)
@@ -18,9 +25,9 @@ for(i in 1:9) {
 #Example: 2 - Mean of each column without apply
 mat <- matrix(1:16, ncol = 4)
 
-#apply(mat, 2, mean) #with apply
+apply(mat, 2, mean) #with apply
 
-#Manually
+#Manually (one by one)
 mean(mat[, 1])
 mean(mat[, 2])
 mean(mat[, 3])
@@ -57,34 +64,43 @@ for(i in 1:length(n)) {
   Max[i] <- max(D)
 }
 
-
 (Summary <- data.frame(Names  = n, Mean1 = Mean, Max1 = Max))
+```
 
-##Excercise: Plot using Loop
-
+##Loop Exercise: Plot using Loop
+```{r}
 #generating Data
 set.seed(123)
 Matrix <- matrix(data = rnorm(100), ncol =10)
 colnames(Matrix) <- LETTERS[1:10]
+```
+Assume first column is dependend variable, and all other variables are independent variable. Do:
 
-#Assume first column is dependend variable, and all other variables 
-# are independent variable. Do
-#1. Plot each indenpendent variable against dependent variable. 
-#2. Save all plot in specific directory. Try to use names such that it 
-# convey information about the variable. 
-#3. Title in the plot should be "Scatterplot: A ~ `name of IV`"
+1. Plot each indenpendent variable against dependent variable. 
+
+2. Save all plot in specific directory. Try to use names such that it convey information about the variable. 
+
+3. Title in the plot should be "Scatterplot: A ~ `name of IV`"
 
 
-#2. Control Flow
+##2. Control Flow: `if` function
 
-#1: If function
-if(FALSE) {
+The function has major two part. The first is condition `if(condition)`, and second is body (usually written in curly bracket). The expression in the body of `if` function is evaluated only if the condition in `if` is `TRUE`. If condition is not true, then the expression in `if` body is not evaluated at all. Take very simple example: 
+```{r, error = TRUE}
+if(TRUE) {
   a <- 2
 }
 a
 
+if(FALSE) {
+  b <- 2
+}
+b
+```
 
-#Sqrt
+Another example is square root. 
+```{r}
+#Square root (if number is positive)
 srt <- function(x) {
   if(x  > 0 ) {
     x^0.5
@@ -93,7 +109,11 @@ srt <- function(x) {
   }
 }
 
+#example: 
+srt(10)
+srt(-2)
 
+#Annuity Function
 Annuity <- function(A = 1, i, n) {
   if(i == 0) {
     n*A
@@ -101,13 +121,16 @@ Annuity <- function(A = 1, i, n) {
   A * (1 - (1+i)^(-n) ) / i
   }
 }
+#example
+Annuity(i = .10, n = 10)
+Annuity(i = 0 , n = 10)
 
+#Annuity Function for different payments
 Annuity <- function(A = 1, i, n, type = c("Monthly","HY", "Q", "A")) {
   if(n < 0) {
     stop("N is negative")
   }
   Fac <- c(Monthly = 12, HY = 2, Q = 4, A = 1)
-  ik
   s <- Fac[type] 
   if(i == 0) {
     n*A*s
@@ -116,4 +139,8 @@ Annuity <- function(A = 1, i, n, type = c("Monthly","HY", "Q", "A")) {
   }
 }
 
+#Example
 Annuity(10000, i = 0, n = 10, type = "Q")
+Annuity(100, i = .10, n = 5, type = "Monthly")
+```
+
