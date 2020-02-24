@@ -3,8 +3,6 @@ title: "Loop and Control flow"
 author: "Neeraj Jain"
 date: "17-02-2020"
 output:
-  html_document: default
-  html_notebook: default
   pdf_document: default
 ---
 ##1. Loop and control flow function (if)
@@ -143,4 +141,9 @@ Annuity <- function(A = 1, i, n, type = c("Monthly","HY", "Q", "A")) {
 Annuity(10000, i = 0, n = 10, type = "Q")
 Annuity(100, i = .10, n = 5, type = "Monthly")
 ```
+
+##GitHub Page
+Check my Github page for all repositories: 
+github.com/neeraj2308
+
 
