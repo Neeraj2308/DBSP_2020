@@ -1,0 +1,84 @@
+---
+title: "Working on Problems"
+author: "Neeraj Jain"
+date: "17-02-2020"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+##1. Function to create dummy variable
+```{r}
+rm(list = ls())
+#Generating Data
+df <- data.frame(Signal = sample(x = c("A", "B", "C"), size = 50, replace = T))
+df$Signal <- as.character(df$Signal)
+
+#Manually Creating the variables
+df$A <- ifelse(df$Signal == "A", 1, 0)
+df$B <- ifelse(df$Signal == "B", 1, 0)
+
+#Writing function
+y <- sample(x = c("A", "B", "Aadi", "Abhijit"), size = 50, replace = TRUE)
+
+Dummy <- function(x) {
+  mat <- matrix(data = x, ncol = 1)
+  uniquex <- unique(x) 
+  n <- length(uniquex) 
+  for(i in 1:(n-1)) {
+    mat <- cbind(mat, ifelse(x == uniquex[i], 1, 0))
+    #mat[, i+1] <- ifelse(x == uniquex[i], 1, 0) #donot do this
+  }
+  return(mat)
+}
+
+#Ex:
+Dum <- Dummy(y)
+head(Dum)
+
+#alternative: In this case, we first created matrix of desired dimensions, then 
+#   according we replace them from desired value.
+Dummy1 <- function(x) {
+  uniquex <- unique(x) 
+  n <- length(uniquex) 
+  mat <- matrix(data = NA, nrow = length(x), ncol = (n - 1))
+  for(i in 1:(n-1)) {
+    #mat <- cbind(mat, ifelse(x == uniquex[i], 1, 0))
+    mat[, i] <- ifelse(x == uniquex[i], 1, 0)
+  }
+  return(mat)
+}
+
+#Ex:
+Dum1 <- Dummy1(y)
+head(Dum1)
+```
+
+
+##2. Arranging data into order. 
+```{r}
+#For atomic Vector
+b <- c(23, 43, 12, 45, 55)
+o <- order(b, decreasing = T)
+b[o]
+
+#For data.frame
+Df <- data.frame(Name = letters[1:20], marks = rnorm(20, 50, 10))
+
+Df <- Df[order(Df$marks, decreasing = T), ]
+head(Df)
+```
+
+##3. General Problem: Count Consecutive zero
+```{r}
+#count number of zero after one
+a <- sample(x = c(1, 0), size = 50, replace = T)
+
+sum(diff(a) < 0)
+
+
+#count number of zero after two consecutive one
+suppressWarnings( sum((a == 0 & c(NA, a) == 1 & c(NA, NA, a) == 1)[1:length(a)], 
+                      na.rm= T) )
+```
+
