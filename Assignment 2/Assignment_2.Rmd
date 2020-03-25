@@ -1,0 +1,45 @@
+---
+title: "Assignement_2"
+subtitle: "B.A (H) Business Economics"
+subsubtitle: "Database and Statistical Package"
+author: "Neeraj Jain"
+date: "19th March 2020"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+\textbf{Question 1}: Write a function that return `TRUE` if a number is prime, otherwise `FALSE`.  \hfill (4 marks)
+
+```{r}
+is.prime <- function(number) {
+  #body of the function
+}
+````
+
+\vspace{.5cm}
+\textbf{Question 2}: Use the above function to test numbers from 1 to 1000, and create a vector of prime numbers. \hfill (1 marks)
+
+\vspace{1cm}
+
+
+\textbf{Question 3}: Use the data in `meap93`. We want to explore the relationship between the math pass rate (math10) and spending per student (expend).
+
+1. Do you think each additional dollar spent has the same effect on the pass rate, or does a diminishing effect seem more appropriate? Explain.
+
+2. In the population model
+$$math10  = \beta_0 + \beta_1 log(expend) + u,$$
+argue that $\beta_1$/10 is the percentage point change in math10 given a 10\% increase in expend. 
+
+3. Use the data in `meap93` to estimate the model from part 2. Report the estimated equation in the usual way, including the sample size and R-squared.
+
+4. How big is the estimated spending effect? Namely, if spending increases by 10\%, what is the estimated percentage point increase in math10?
+
+5. One might worry that regression analysis can produce fitted values for math10 that are greater than 100. Why is this not much of a worry in this data set? \hfill (1*5  = 5 Marks)
+
+
+

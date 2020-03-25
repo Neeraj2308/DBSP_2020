@@ -1,0 +1,160 @@
+---
+title: "Learning Apply Family Functions in R"
+author: |
+  | Neeraj Jain
+  | neeraj2409@outlook.com
+date: "24/03/2020"
+output:
+  html_document: default
+  html_notebook: default
+---
+The objective of this worksheet is to enhance knowledge of the `apply` family functions. 
+
+## 1. `apply` function
+`apply` : apply function to each column or row of matrix (more accurately `array`). Since, dataframe is also matrix, therefore, `apply` also works on dataframe. See example,
+
+```{r}
+Df <- data.frame(a = 1:10, b = rnorm(10), c = runif(10, 10, 100))
+apply(Df, 1, sum) # one as second argument indicate provide sum of each row.
+apply(Df, 2, sum) # provide sum of each column
+
+#More example: 
+#Summary statistics of each column
+apply(Df, 2, summary) 
+
+#only mean of each column
+apply(Df, 2, mean)
+
+#min of each column
+apply(Df, 2, min)
+
+#sum of square of each column 
+apply(Df, 2, function(x) sum(x^2))
+
+#Number of NA in each column
+apply(Df, 2, function(x) sum(is.na(x)))
+
+```
+
+**Try following excercise:**
+```{r, echo=TRUE, error = TRUE}
+# Ex1: Why sum of first 2 column is not returned? 
+#Create following R object: 
+Dfm <- data.frame(a = 1:10, b = 10:1, letters[1:10])
+apply(Dfm, 2, sum)
+
+#Ex2: Get mean and variance using single line function for each column. 
+Df <- data.frame(a = 1:10, b = rnorm(10), c = runif(10, 10, 100))
+
+#Ex3: Replace NA's value with 0 in following dataframe using single line function using apply
+Df <- data.frame(a = c(1:9, NA), b = sample(c(1, 5, NA), size = 10, replace = TRUE))
+````
+
+```{r eval=FALSE, include=FALSE}
+#without apply
+Df[is.na(Df)] <- 0
+apply(Df, 2, function(x){x[is.na(x)] <- 0
+return(x)})
+```
+
+## 2. `lapply` function
+`lapply` apply a Function to each element of a List or Vector. Lapply returns output in the list, of the same length of X (input vector or list). 
+
+```{r}
+v <- c(1, 2, 3, 4, 5)
+
+#square root of each element
+lapply(v, sqrt)
+
+#square of each element
+lapply(v, function(x) x^2)
+
+#Function on list
+Ls <- list(a = 1:10, b = runif(5), c = rnorm(15))
+
+#length of each element
+lapply(Ls, length)
+
+#mean of each element
+lapply(Ls, mean)
+
+#summary statistics of each element of  list
+lapply(Ls, summary)
+```
+
+**Try following excercise:**
+```{r}
+#Ex1: Why following code works on dataframe? 
+Df <- data.frame(a = 1:10, b = 10:1, c = rnorm(10)) 
+lapply(Df, mean)
+
+#Ex2: calculate number of missing values for each column of data in list (Lsd). 
+data(cars)
+data("mtcars")
+Lsd <- list(cars = cars, mtcars = mtcars)
+
+#Ex3: Calculate summary of each column of data in Lsd. 
+
+#Ex4: Write a function that use lapply within a lapply. 
+
+#Ex5: Attempt all `apply` excercise using lapply
+````
+
+```{r, include=FALSE}
+lapply(Lsd, FUN = function(x) apply(x, 2, function(y) sum(is.na(y))))
+```
+
+## 3. `sapply` function
+Sapply is same as `lapply`, but it simplifies the output to vector or matrix, if possible. `sapply(x, f, simplify = FALSE, USE.NAMES = FALSE)` is the same as `lapply(x, f)`. Same example using `sapply`, and see the difference. 
+
+```{r}
+v <- c(1, 2, 3, 4, 5)
+
+#square root of each element
+sapply(v, sqrt)
+
+#square of each element
+sapply(v, function(x) x^2)
+
+#Function on list
+Ls <- list(a = 1:10, b = runif(5), c = rnorm(15))
+
+#length of each element
+sapply(Ls, length)
+
+#mean of each element
+sapply(Ls, mean)
+
+#summary statistics of each element of  list
+sapply(Ls, summary) #may be much better. 
+```
+
+Attempt all excercise of lapply using sapply and check the differences in the outcome. If you find yourself typing `unlist(lapply(...))`, stop and consider `sapply`.
+
+## 4. `vapply` function
+vapply is similar to sapply, but has a pre-specified `type` of return value, so it can be safer (and sometimes faster) to use. For example, 
+
+```{r, error = TRUE}
+vapply(Df, FUN = mean, FUN.VALUE = 0) #since return values are numeric, it works. 
+
+vapply(Df, FUN = mean, FUN.VALUE = "a")  #does not work
+```
+For more information, please refer `?vapply`. 
+
+## 5. `mapply` function
+This is useful when you have several data structures (e.g. vectors, lists) and you want to apply a function to the 1st elements of each, and then the 2nd elements of each, etc., coercing the result to a vector/array as in `sapply`.
+
+```{r, eval=TRUE, include=TRUE}
+#Sums the 1st elements, the 2nd elements, etc. 
+mapply(sum, 1:5, 1:5, 1:5) 
+
+mapply(rep, 1:4, 4:1)   
+
+#To generate random numbers with different mean and standard deviation
+mapply(FUN = function(x, y) rnorm(5, x, y), 1:5, 5:1)
+```
+*I never felt the need of `mapply` function for any of the problem*.
+
+
+
+
