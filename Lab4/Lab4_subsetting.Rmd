@@ -3,109 +3,98 @@ title: "Subsetting"
 author: "Neeraj Jain"
 date: "27-01-2020"
 output:
-  pdf_document: default
-  html_notebook: default
   html_document: default
+  html_notebook: default
+  pdf_document: default
 ---
-Lab 4:
 
-###Subsetting can be done in three ways
+**Subsetting**: can be used to return subsets of a vector, martix, or data frame which meet a particular condition. There are three methods of subsetting in R: 
 
-
-
-1. **By Index**
-
+###  1. **By Index**: `[ ]` (closed brackets) are used to subset elements from vector, matrix, daatframe or list.
+  
+### 1.1 **Atomic Vector**
 ```{r, error = TRUE}
 rm(list = ls())
 
 a <- c(1,2,3,4)
 
-b <- a[1] #getting first element
-
-c <- a[c(1,2)]
-
-a[5] #returns NA as first element is not known. 
-
+a[1] #getting first element
+a[c(1,2)] #to get more than one elements
+a[5] #returns NA as fifth element is not known. 
 a[c(1, 1, 1)] #first element 3 times. 
 a[c(1, 2, NA, 4)] #NA returns NA
 
+#Negative index removes the elements. 
 a[-2] #remove 2nd element
-a[c(-3, -4)] 
+a[c(-3, -4)]  #to remove more than one elements. 
 
 
 #another Example
 a <- c(23, 24, 31, 31)
-a[1]
-a[2]
 a <- a[-2] #remove 2nd element and overewrite a
 a
  
-a[c(1,2)] <- c(34, 101) #replacing first 2 element of a
+#Assignment 
+a[2] <- 12 #replacing 2 element from 12
+a[c(1,2)] <- c(34, 101) #replacing first 2 element of with new values
 a
-
 
 #character Vector
 BB <- c("Vedansh", "Asim", "Sehnaz", "Paras", "Abhijit", "Shukla")
 
-BB <- BB[-c(1, 5)] #removing 1st and 5th element from BB
-BB 
+BB[-c(1, 5)] #removing 1st and 5th element from BB
 
-#"Aarti", "Maraya"
+#adding more elements. Like adding "Aarti", and "Maraya" to BB
 BB[c(5, 6)] <- c("aarti", "marya") #adding two names to BB
-BB <- c(BB, "aarti", "marya") #alternative of last line #it is better too. 
-BB
+( BB <- c(BB, "aarti", "marya") )#alternative of last line #it is better too. 
 length(BB)
 
-BB[5] <- "Tarang"
+BB[5] <- "Tarang" #replacing fifth element from "Tarang"
 
-BB <- c(BB[1:5], "Katrina Kaif", BB[6:10]) #Adding another name between the character. 
-BB
+( BB <- c(BB[1:5], "Katrina Kaif", BB[6:10]) )#Adding another name between the character. 
 
 #Another Example
 SG <- c("Kukku", "Bunty", "Sartaz", "Gaitonde")
 
-SG <- c(SG[1:2], "Gurteg", SG[3:4]) #Adding another element between the SG
-SG
+( SG <- c(SG[1:2], "Gurteg", SG[3:4]) ) #Adding another element between the SG
+```
 
 
-#Subsetting For Matrix
-Mat2 <- matrix(1:16, ncol = 4)
+###  1.2 **Matrix** : Since, matrix has 2 dimension, thefore we used `,` to provide index to second argument. See example below: 
+```{r, error = TRUE}
+( Mat2 <- matrix(1:16, ncol = 4) )
 
-Mat2
+Mat2[5] #fifth element of matrix. (raed column wise)
 
-Mat2[5]
-
+#element of 2nd row and 3rd column
 Mat2[2,3] #, menas providing index for 2nd dimension (ie column)
 
+#Be careful. `,` is used to provide index for second dimension of matrix. However, for atomic vetocr
 a <- 1:4
-
 a[1,2] #it wonot work. Since, a has only one dimension. 
 
+#check the output of followings: 
 Mat2[c(2,3) , ]
 Mat2[ , c(2,3)]
 Mat2[c(2,3), c(3,4)]
+```
 
-#to add column and rows in matrix use these two function
-rbind
-cbind
+### To add column and rows in matrix use these two function: `rbind` an `cbind`
 
+```{r, error = TRUE}
 Mat2
-Paridhi <- rbind(Mat2, c(1,2,3,4))
+rbind(Mat2, c(1,2,3,4))
 cbind(Mat2, c(1,2,3,4))
+```
 
+### 1.3 **list**
+```{r, error = TRUE}
+( ls <- list(a = 1:4, b = BB, c = Mat2) )
 
-#Subsetting for list
-ls <- list(a = 1:4, b = BB, c = Mat2)
-ls
-ls[c(2, 3)]
-str(ls[1]) #return list
+ls[c(2, 3)] #to get 2nd and 3rd elements of list
 
-ls2 <- ls[c(2,3)]
-str(ls2)
-
-ls3 <- ls[2]
-str(ls3)
-length(ls3)
+ls2 <- ls[c(2)]
+str(ls2) #output in list
 
 ls4 <- ls[[2]] #double closed bracked to get element of list
 str(ls4)
@@ -118,14 +107,15 @@ ls[[2, 3]] #unpredictable resutls. Mostly returns error.
 ls$b
 ls$c
 
-ls$c[3, c(1,2)]
-ls$c[3, ][c(1,2)] #subsetting in subsetting result. 
+#we can do further subsetting on subsetting results. Like: 
+ls$c[3, c(1,2)] 
+ls$c[3, ][c(1,2)] #subsetting on subsetting results. 
+```
 
-
-#Subsetting in Dataframe
+### 1.4 **Dataframe**
+```{r}
 set.seed(123)
 Df <- data.frame(a = rnorm(10), b = rnorm(10))
-Df
 
 #like matrix (when use ,)
 Df[1,2]
@@ -141,22 +131,22 @@ str(Df[1])
 str(Df[[1]])
 ```
 
-Exercise
+### Exercise
 ```{r}
 #Create following Df
 set.seed(007)
 Df2 <- as.data.frame(matrix(rnorm(16), ncol = 4))
-
-#1. Add new row as c(1,2,3, 4)
-#2. First get 2nd column using subsetting, then calculate sum, var of this.
-#3. Get 2nd column of your dataframe using 3 differetn methods. 
-#4. Get sum of 3rd row. 
-#5. Replace first column with 1:5
 ```
+ 1.  Add new row as c(1,2,3, 4)
+ 2. First get 2nd column using subsetting, then calculate sum, var of this.
+ 3. Get 2nd column of your dataframe using 3 differetn methods. 
+ 4. Get sum of 3rd row. 
+ 5. Replace first column with 1:5
+
 
 
 ***********
-2. **Subsetting by Logical value**
+### 2. **Subsetting by Logical value**
 ```{r}
 rm(list = ls())
 
@@ -169,21 +159,26 @@ a >= 3
 a <= 3
 a == 3
 a != 3
+```
 
-all #alternative of excel and
-any #alternative of excel or
+### There are two logical function in R, 1) `all`, it is alternative of excel `and`, and 2) `any`, it is alternative of excel `or`. See example below
 
+```{r}
 all(TRUE,TRUE, TRUE, FALSE)
 any(TRUE, FALSE, FALSE)
 
 b <- c("a", "a ", "a")
 b[c(1,2,3)] == "a"
-all(b == "a")
-
+all(b == "a") #to check all elements are equals to "a"
 
 d <- c(rep(1, 100), 2, 2, rep(1, 200))
 all(d == 1)
-which(c(TRUE, FALSE, FALSE, TRUE, TRUE)) #which returns index of true value
+```
+
+### Another useful function in R is `which`. It returns index of all `TRUE` value. A simple example is: `which(T, F, T)`, will retrun `#1 3`. 
+
+```{r}
+which(c(TRUE, FALSE, FALSE, TRUE, TRUE)) 
 
 d[which(d != 1)] #getting values from index 
 
@@ -207,17 +202,15 @@ g[g > 5]
 g[g <= 2] #a. 
 g[g != 7] #b. 
 sum(g > 3) #c. 
+```
+### There are two more logical opertors, 1) `&` and 2) `|`. `&`. These are like mathematical operators and works in the same way. For example, `TRUE & TRUE` returns `TRUE`, ie both elements on right and left are true, then `&` returns true. `|` is called or. If any of the element either on left or right is right, then `|` returns true. `|` returns `FALSE` only if both the elements are `FALSE` on right and left.  See more example: 
 
-
-#logical operators. 
-#    &, |
-
-F & T & T  # & is and 
-
+```{r}
 c(T, F, T, F) | c(F, T, T, F)  #| is or
+c(T, F, T, F) & c(F, T, T, F)
 ```
 
-Class Exercise
+### Class Exercise
 ```{r}
 #Question
 set.seed(123) 
@@ -242,5 +235,5 @@ Gender <- sample(x = c("F", "G"), size = 82, replace = TRUE)
 ************
 
 3. **By elements name**
-Done in next class.
+Check Lab 5.
 
