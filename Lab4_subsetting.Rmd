@@ -1,0 +1,239 @@
+---
+title: "Subsetting"
+author: "Neeraj Jain"
+date: "27-01-2020"
+output:
+  html_document: default
+  html_notebook: default
+  pdf_document: default
+---
+
+**Subsetting**: can be used to return subsets of a vector, martix, or data frame which meet a particular condition. There are three methods of subsetting in R: 
+
+###  1. **By Index**: `[ ]` (closed brackets) are used to subset elements from vector, matrix, daatframe or list.
+  
+### 1.1 **Atomic Vector**
+```{r, error = TRUE}
+rm(list = ls())
+
+a <- c(1,2,3,4)
+
+a[1] #getting first element
+a[c(1,2)] #to get more than one elements
+a[5] #returns NA as fifth element is not known. 
+a[c(1, 1, 1)] #first element 3 times. 
+a[c(1, 2, NA, 4)] #NA returns NA
+
+#Negative index removes the elements. 
+a[-2] #remove 2nd element
+a[c(-3, -4)]  #to remove more than one elements. 
+
+
+#another Example
+a <- c(23, 24, 31, 31)
+a <- a[-2] #remove 2nd element and overewrite a
+a
+ 
+#Assignment 
+a[2] <- 12 #replacing 2 element from 12
+a[c(1,2)] <- c(34, 101) #replacing first 2 element of with new values
+a
+
+#character Vector
+BB <- c("Vedansh", "Asim", "Sehnaz", "Paras", "Abhijit", "Shukla")
+
+BB[-c(1, 5)] #removing 1st and 5th element from BB
+
+#adding more elements. Like adding "Aarti", and "Maraya" to BB
+BB[c(5, 6)] <- c("aarti", "marya") #adding two names to BB
+( BB <- c(BB, "aarti", "marya") )#alternative of last line #it is better too. 
+length(BB)
+
+BB[5] <- "Tarang" #replacing fifth element from "Tarang"
+
+( BB <- c(BB[1:5], "Katrina Kaif", BB[6:10]) )#Adding another name between the character. 
+
+#Another Example
+SG <- c("Kukku", "Bunty", "Sartaz", "Gaitonde")
+
+( SG <- c(SG[1:2], "Gurteg", SG[3:4]) ) #Adding another element between the SG
+```
+
+
+###  1.2 **Matrix** : Since, matrix has 2 dimension, thefore we used `,` to provide index to second argument. See example below: 
+```{r, error = TRUE}
+( Mat2 <- matrix(1:16, ncol = 4) )
+
+Mat2[5] #fifth element of matrix. (raed column wise)
+
+#element of 2nd row and 3rd column
+Mat2[2,3] #, menas providing index for 2nd dimension (ie column)
+
+#Be careful. `,` is used to provide index for second dimension of matrix. However, for atomic vetocr
+a <- 1:4
+a[1,2] #it wonot work. Since, a has only one dimension. 
+
+#check the output of followings: 
+Mat2[c(2,3) , ]
+Mat2[ , c(2,3)]
+Mat2[c(2,3), c(3,4)]
+```
+
+### To add column and rows in matrix use these two function: `rbind` an `cbind`
+
+```{r, error = TRUE}
+Mat2
+rbind(Mat2, c(1,2,3,4))
+cbind(Mat2, c(1,2,3,4))
+```
+
+### 1.3 **list**
+```{r, error = TRUE}
+( ls <- list(a = 1:4, b = BB, c = Mat2) )
+
+ls[c(2, 3)] #to get 2nd and 3rd elements of list
+
+ls2 <- ls[c(2)]
+str(ls2) #output in list
+
+ls4 <- ls[[2]] #double closed bracked to get element of list
+str(ls4)
+length(ls4)
+
+#Always use single index in double closed bracket. 
+ls[[2, 3]] #unpredictable resutls. Mostly returns error. 
+
+#alternative of [[ is $
+ls$b
+ls$c
+
+#we can do further subsetting on subsetting results. Like: 
+ls$c[3, c(1,2)] 
+ls$c[3, ][c(1,2)] #subsetting on subsetting results. 
+```
+
+### 1.4 **Dataframe**
+```{r}
+set.seed(123)
+Df <- data.frame(a = rnorm(10), b = rnorm(10))
+
+#like matrix (when use ,)
+Df[1,2]
+Df[1, ]
+Df[, 1]
+Df[c(7,8), 1]
+
+#like list
+Df$a[c(7,8)] 
+
+
+str(Df[1])
+str(Df[[1]])
+```
+
+### Exercise
+```{r}
+#Create following Df
+set.seed(007)
+Df2 <- as.data.frame(matrix(rnorm(16), ncol = 4))
+```
+ 1.  Add new row as c(1,2,3, 4)
+ 2. First get 2nd column using subsetting, then calculate sum, var of this.
+ 3. Get 2nd column of your dataframe using 3 differetn methods. 
+ 4. Get sum of 3rd row. 
+ 5. Replace first column with 1:5
+
+
+
+***********
+### 2. **Subsetting by Logical value**
+```{r}
+rm(list = ls())
+
+#logical Operators in R
+a <- c(2, 4, 6, 10) 
+
+a > 3
+a < 3
+a >= 3
+a <= 3
+a == 3
+a != 3
+```
+
+### There are two logical function in R, 1) `all`, it is alternative of excel `and`, and 2) `any`, it is alternative of excel `or`. See example below
+
+```{r}
+all(TRUE,TRUE, TRUE, FALSE)
+any(TRUE, FALSE, FALSE)
+
+b <- c("a", "a ", "a")
+b[c(1,2,3)] == "a"
+all(b == "a") #to check all elements are equals to "a"
+
+d <- c(rep(1, 100), 2, 2, rep(1, 200))
+all(d == 1)
+```
+
+### Another useful function in R is `which`. It returns index of all `TRUE` value. A simple example is: `which(T, F, T)`, will retrun `#1 3`. 
+
+```{r}
+which(c(TRUE, FALSE, FALSE, TRUE, TRUE)) 
+
+d[which(d != 1)] #getting values from index 
+
+e <- c(TRUE, FALSE,TRUE)
+!e  #! reverse the T and F
+
+which(!(d == 1))  #do not use !d == 1
+
+g <- c(2, 5, 7, 10, 6)
+g[c(TRUE, FALSE, TRUE, FALSE, TRUE)]
+
+#all values greater than 5
+g > 5
+g[g > 5]
+
+#Small Example:
+#a. values <= 2
+#b.  values not equal to 7
+#c.  how many's values are greater than 3
+
+g[g <= 2] #a. 
+g[g != 7] #b. 
+sum(g > 3) #c. 
+```
+### There are two more logical opertors, 1) `&` and 2) `|`. `&`. These are like mathematical operators and works in the same way. For example, `TRUE & TRUE` returns `TRUE`, ie both elements on right and left are true, then `&` returns true. `|` is called or. If any of the element either on left or right is right, then `|` returns true. `|` returns `FALSE` only if both the elements are `FALSE` on right and left.  See more example: 
+
+```{r}
+c(T, F, T, F) | c(F, T, T, F)  #| is or
+c(T, F, T, F) & c(F, T, T, F)
+```
+
+### Class Exercise
+```{r}
+#Question
+set.seed(123) 
+marks <- rnorm(82, mean = 65, sd = 20)
+```
+
+1. Validate your data to ensure that al values are between 0-100. If any value greter than 100, replace by 100, and in case of less than 0, replace by 0.
+
+2. Percentage of students who have scored more than 60 marks. 
+3. Get index of students who scored more than 90 marks, and also vector of marks.  
+4. Get mean of top 10 and bottom 10 students marks. [Hint: order]
+5. Percentage of stuents who have scored marks between 75 - 90. 
+6. If gender of the students is given as follows: 
+```{r}
+Gender <- sample(x = c("F", "G"), size = 82, replace = TRUE)
+```
+
+7. Find number of male students, and female students. 
+8. Find mean, sd, min, and max of males and female marks respectively.
+
+
+************
+
+3. **By elements name**
+Check Lab 5.
+
